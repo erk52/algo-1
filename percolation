@@ -1,4 +1,11 @@
 
+/* Name of the class has to be "Main" only if the class is public. */
+/* package codechef; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
 class Percolation 
 	{
 		private int[] grid;
@@ -135,7 +142,7 @@ class PercolationStats
 		N = n;
 		int count = 0;
 		results = new int[T];
-		int[] spaces = new int[n*n];
+		Integer[] spaces = new Integer[n*n];
 		int row;
 		int col;
 		for (int j=0;j<n*n;j++){
@@ -146,7 +153,8 @@ class PercolationStats
 			Percolation perkTrial = new Percolation(N);
 			count = 0;
 			//Shuffle spaces;
-			StdRandom.shuffle(spaces);
+			Collections.shuffle(Arrays.asList(spaces));
+
 			while (!perkTrial.percolates() && count < N*N){
 			    row = 1 + spaces[count] / N;
 			    col = 1 + spaces[count] % N;
@@ -181,15 +189,20 @@ class PercolationStats
 	}
 }
 	
-public class HelloWorld {
+//################
+
+
+//################
+class HelloWorld {
 	
     public static void main(String[] args) {
         // Prints "Hello, World" to the terminal window.
         System.out.println("Hello, World");
 
         
-        PercolationStats PS = new PercolationStats(5,10);
+        PercolationStats PS = new PercolationStats(200,100);
         System.out.println(PS.mean());
+        System.out.println(PS.stddev());
         
     }
 
