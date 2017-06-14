@@ -35,19 +35,27 @@ class Percolation
 			int neigh;
 			if ((row+1) <= n){
 				neigh = row*n + col-1;
-				myUnion.union(index,neigh);
+				if ( grid[neigh] == 1 ){
+					myUnion.union(index,neigh);
+				}
 			}
 			if ((row-1) >= 1){
 				neigh = (row-2)*n + col-1;
-				myUnion.union(index,neigh);
+				if ( grid[neigh] == 1 ){
+					myUnion.union(index,neigh);
+				}
 			}
 			if ((col+1) <= n){
 				neigh = (row - 1)*n + (col);
-				myUnion.union(index,neigh);
+				if ( grid[neigh] == 1 ){
+					myUnion.union(index,neigh);
+				}
 			}
 			if ((col-1) >= 1){
 				neigh = (row - 1)*n + (col-2);
-				myUnion.union(index,neigh);
+				if ( grid[neigh] == 1 ){
+					myUnion.union(index,neigh);
+				}
 			}
 
 
@@ -70,6 +78,11 @@ class Percolation
 		}
 		public boolean percolates(){
 			return myUnion.connected(TOP,BOTTOM);
+		}
+		public void printGrid(){
+			for (int i = 0; i<n*n; i++){
+				System.out.println(grid[i]);
+			}
 		}
 	}
 class WeightedQuickUnionUF
@@ -118,11 +131,13 @@ public class HelloWorld {
 
         
         Percolation myPerk = new Percolation(5);
+        myPerk.printGrid();
         myPerk.open(1,1);
-        myPerk.open(1,2);
-        myPerk.open(1,4);
-        myPerk.open(1,3);
-        myPerk.open(1,5);
+        myPerk.open(2,1);
+        myPerk.open(3,1);
+        myPerk.open(4,1);
+        myPerk.open(5,1);
+        myPerk.printGrid();
         System.out.println(myPerk.percolates());
     }
 
