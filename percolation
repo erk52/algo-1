@@ -67,7 +67,7 @@ class Percolation
 		}
 		public boolean isFull(int row, int col){
 			int index = (row - 1)*n + (col-1);
-			return myUnion.connected(index, n*n);
+			return myUnion.connected(index, TOP);
 		}
 		public int numberOfOpenSites(){
 			int arr_sum = 0;
@@ -123,6 +123,64 @@ class WeightedQuickUnionUF
 			}
 		}
 	}
+
+class PercolationStats 
+{
+	private int N;
+	private int T;
+	private int[] results;
+	
+	public PercolationStats(int n, int trials){
+		T = trials;
+		N = n;
+		int count = 0;
+		results = new int[T];
+		int[] spaces = new int[n*n];
+		int row;
+		int col;
+		for (int j=0;j<n*n;j++){
+			spaces[j] = j;
+		}
+		
+		for (int i=0;i<T;i++){
+			Percolation perkTrial = new Percolation(N);
+			count = 0;
+			//Shuffle spaces;
+			StdRandom.shuffle(spaces);
+			while (!perkTrial.percolates() && count < N*N){
+			    row = 1 + spaces[count] / N;
+			    col = 1 + spaces[count] % N;
+				perkTrial.open(row, col);
+				count += 1;
+			}
+			results[i] = count;
+		}
+	}
+	public double mean(){
+		double avg = 0.0;
+		for (int i=0;i < T; i++){
+			avg += results[i];
+		}
+		avg = avg / T;
+		return avg;
+	}
+	public double stddev(){
+		double avg = mean();
+		double deviations = 0.0;
+		for (int i=0;i < T; i++){
+			deviations += (results[i] - avg) * (results[i] - avg);
+		}
+		double variance = deviations / T;
+		return Math.sqrt(variance);
+	}
+	public double confidenceLo(){
+		return mean() - 1.96*stddev()/Math.sqrt(T);
+	}
+	public double confidenceHi(){
+		return mean() + 1.96*stddev()/Math.sqrt(T);
+	}
+}
+	
 public class HelloWorld {
 	
     public static void main(String[] args) {
@@ -130,15 +188,9 @@ public class HelloWorld {
         System.out.println("Hello, World");
 
         
-        Percolation myPerk = new Percolation(5);
-        myPerk.printGrid();
-        myPerk.open(1,1);
-        myPerk.open(2,1);
-        myPerk.open(3,1);
-        myPerk.open(4,1);
-        myPerk.open(5,1);
-        myPerk.printGrid();
-        System.out.println(myPerk.percolates());
+        PercolationStats PS = new PercolationStats(5,10);
+        System.out.println(PS.mean());
+        
     }
 
 }
