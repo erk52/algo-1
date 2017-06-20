@@ -1,3 +1,21 @@
+
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+public class Program
+{
+	public static void main(String[] args) {
+		Deque<String> myQ = new Deque<String>();
+		myQ.addFirst("first_add");
+		myQ.addFirst("second_add");
+		myQ.addLast("added last");
+		for (String s : myQ){
+		    System.out.println(s);
+		}
+	}
+}
+
 class Deque<Item> implements Iterable<Item> {
     private class Node<Item> {
         Item data;
@@ -72,13 +90,11 @@ class Deque<Item> implements Iterable<Item> {
        return output;
    }
 
-    public Iterator<Item> iterator()
-    {
-        return new ListIterator();
-    }
+
     private class ListIterator implements Iterator<Item>
     {
-        private Node current = head;
+        private Node<Item> current;// = head;
+        public ListIterator() { current = head; }
         public boolean hasNext() { return current != null; }
         public void remove() { /* not supported */ }
         public Item next()
@@ -88,6 +104,7 @@ class Deque<Item> implements Iterable<Item> {
             return item;
         }
     }
-
+    public Iterator<Item> iterator()
+    { return new ListIterator(); }
    //public static void main(String[] args)   // unit testing (optional)*/
 }
